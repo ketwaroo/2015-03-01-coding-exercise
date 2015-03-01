@@ -3,7 +3,9 @@
 namespace WarGame;
 
 /**
- * 
+ * The Card definition is simply a `name` and an interger `value`.
+ * The `name` would have typical values as `2 of hearts`, `6 of spade`, `king of treble` etc.
+ * the value would be used when comparign the strength of each card. the values range from 2 to 13
  *
  * @author Yaasir Ketwaroo<yaasir@ketwaroo.com>
  */
@@ -19,7 +21,7 @@ class Card
      */
     public function __construct($name, $value)
     {
-
+        
     }
 
     /**
@@ -39,6 +41,7 @@ class Card
     {
         return intval($this->value);
     }
+
     /**
      * 
      * @param integer $value
@@ -56,6 +59,33 @@ class Card
     public static function shuffleDeck()
     {
         // 
+    }
+
+    /**
+     * creates entries for 52 cards
+     */
+    public static function seedDeck()
+    {
+        $houses = array(
+            'spades',
+            'heart',
+            'diamond',
+            'clubs',
+        );
+        $values = array_combine(
+            array_merge(range(2, 9), array('jack', 'queen', 'king', 'ace'))
+            , range(2, 13));
+
+        $cards = array();
+        foreach($houses as $h)
+        {
+            foreach($values as $prefix => $val)
+            {
+                $cards["{$prefix} of {$h}"] = $val;
+            }
+        }
+
+        // insert cards to the `card` table.
     }
 
 }

@@ -3,7 +3,8 @@
 namespace WarGame;
 
 /**
- * PlayerSession 
+ * PlayerSession
+ * it is the reference of a player instance within a game session.
  *
  * @author Yaasir Ketwaroo<yaasir@ketwaroo.com>
  */

@@ -3,7 +3,8 @@
 namespace WarGame;
 
 /**
- * Description of Round
+ * Round entity handles caards currently in play and determining
+ * the winner of the round based on card values.
  *
  * @author Yaasir Ketwaroo<yaasir@ketwaroo.com>
  */
@@ -21,7 +22,7 @@ class Round
     const CARDS_IF_DRAW = 3;
 
     // round attributes
-    protected $round_number, $won_by, $started_at, $ended_at;
+    protected $round_number, $started_at, $ended_at;
 
     /**
      * the game session the round belongs to
@@ -30,30 +31,63 @@ class Round
     protected $gameSession;
 
     /**
-     * 
+     * instance of winner
+     * @var Player 
+     */
+    protected $wonBy;
+
+    /**
+     * Create new round attached to the supplied game session
      * @param GameSession $gameSession
      */
     public function __construct(GameSession $gameSession)
     {
-        // a round in progress can be determined 
+        
     }
 
     /**
-     * Play the actual game.
-     * the last card round will be reloaded if available or a new set will be dealt
-     * @return GameSession 
+     * A round of Game can span multiple turns.
+     * The last card round will be reloaded if available or a new set will be dealt
+     * @return Round 
      */
     public function playRound()
     {
 
+        // verify that we did have a winner from last round.
+        // set Draw if needed
         $winner = $this->determineRoundWinner()
             ->getRoundWinner();
 
         if(!empty($winner))
         {
             $this->endRound($winner);
+            return $this;
         }
 
+        $numberOfCards = ($this->isDraw()) ? static::CARDS_IF_DRAW : static::CARDS_PER_ROUND;
+
+        $this->deal($numberOfCards);
+
+        return $this;
+    }
+
+    /**
+     * pop some cards from the player's stack into the current round
+     * @param int $numberOfCards
+     * @return Round
+     */
+    protected function deal($numberOfCards)
+    {
+        foreach($this->getGameSession()
+            ->getPlayerSessions() as $playerSession)
+        {
+            $cards = $playerSession->drawCardsFromStack($numberOfCards);
+
+            foreach($cards as $card)
+            {
+                $this->addCardToRound($card, $playerSession->getPlayer());
+            }
+        }
         return $this;
     }
 
@@ -63,7 +97,7 @@ class Round
      * @param Card $card
      * @param Player $drawnBy
      */
-    public function addCardToRound(Card $card, Player $drawnBy)
+    protected function addCardToRound(Card $card, Player $drawnBy)
     {
         
     }
@@ -93,9 +127,22 @@ class Round
      * perform check to determine who has the highest card in the round based on picked cards
      * @return Round
      */
-    public function determineRoundWinner()
+    protected function determineRoundWinner()
     {
-        // make sure everybody has picked a card
+        // make sure everybody has picked a card for the current round.
+        // 
+        // SELECT c.card_id, c.card_value, cr.drawn_by
+        //  FROM card as c
+        //  JOIN cards_in_round as cr
+        //   ON (cr.card_id = c.card_id)
+        //  WHERE
+        //    cr.round_id = $this->round_id
+        //    AND cr.is_picked = 1
+        //    AND cr.is_draw = 0
+        //    AND cr.is_flushed = 0
+        //  ORDER BY c.value DESC
+        //  
+        //  
         // if in a draw state, $this->setDraw()
     }
 
@@ -165,12 +212,30 @@ class Round
     }
 
     /**
+     * determine if the round is no longer active.
+     * @return boolean
+     */
+    public function isRoundEnded()
+    {
+        
+    }
+
+    /**
      * 
      * @return GameSession
      */
     public function getGameSession()
     {
         return $this->gameSession;
+    }
+
+    /**
+     * get the round_id attribute
+     * @return int
+     */
+    public function getRoundId()
+    {
+        
     }
 
 }

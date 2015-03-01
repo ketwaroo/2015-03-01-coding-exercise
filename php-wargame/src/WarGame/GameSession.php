@@ -3,7 +3,8 @@
 namespace WarGame;
 
 /**
- * The War Game session
+ * The War Game session.
+ * This is the entry point for the game and clls the other models to perform different operations.
  *
  * @author Yaasir Ketwaroo<yaasir@ketwaroo.com>
  */
@@ -53,7 +54,7 @@ class GameSession
         // $playerSession = new PlayerSession($player,$this);
         return $this;
     }
-    
+
     /**
      * get the player session given a playser instance
      * @param Player $player
@@ -78,6 +79,15 @@ class GameSession
     }
 
     /**
+     * returns the list of all players currently in this game
+     * @return PlayerSession[]
+     */
+    public function getPlayerSessions()
+    {
+        return $this->playerSessions;
+    }
+
+    /**
      * starts the game.
      * @throws \Exception can throw an exception if some conditions aren't met
      * @return GameSession
@@ -94,12 +104,25 @@ class GameSession
         // throw exception for controller/higher level script to catch
         // set start time.
         // make sure all players are present
-        return $this->deal();
+        // deal cards
+        $this->deal();
 
-        $this->getCurrentRound()
+
+        $round = $this->getCurrentRound()
             ->playRound();
-        
-        $this->determineGameWinner();
+
+        if($round->isRoundEnded())
+        {
+            $winner = $this->determineGameWinner()
+                ->getWinner();
+
+            if(!empty($winner))
+            {
+                $this->endGameSession($winner);
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -139,10 +162,9 @@ class GameSession
     {
         if($this->isGameInProgress())
         {
-            // load card stacks from saved data.
-            // read from cards_in_stack
+            // load card stacks from saved data. read from cards_in_stack
         }
-        else
+        else // it's a new game
         {
             $cards         = Card::shuffleDeck(); // get list of pre shuffled cards
             $cardsPerStack = floor(count($cards) / count($this->playerSessions)); // there may be some cards left over
@@ -164,9 +186,9 @@ class GameSession
     public function determineGameWinner()
     {
         // foreach player session, get stack height.
-        // if all but one player has a stack height =0; game is won by last standing player
-        // $winner = <>
-        $this->endGameSession($winner);
+        // if all but one player has a stack height == 0; game is won by last standing player
+        //  
+
         return $this;
     }
 

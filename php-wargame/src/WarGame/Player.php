@@ -3,41 +3,29 @@
 namespace WarGame;
 
 /**
- * Player Entity
+ * Player Entity. Stores basic auth information about a player.
  *
  * @author Yaasir Ketwaroo<yaasir@ketwaroo.com>
  */
 class Player
 {
 
+    /**
+     * authentication apptemt
+     * @throws Exception if login fails
+     */
+    public function login()
+    {
+        
+    }
+
+    /**
+     * creates a new game session
+     * @return GameSession
+     */
     public function startNewGameSession()
     {
-
-        return $this; // for chaining
-    }
-
-    /**
-     * send an invitation to play to another player.
-     * @param Player $player
-     * @param GameSession $gameSession
-     * @return Player
-     */
-    public function invitePlayer(Player $player, GameSession $gameSession)
-    {
-        return $this; // for chaining
-    }
-
-    /**
-     * add the player to an existing game session
-     * 
-     * @param GameSession $gameSession
-     * @return PlayerSession new or existing player instance in that game session
-     */
-    public function joinSession(GameSession $gameSession)
-    {
-        // 
-
-        return $playerSession;
+        
     }
 
 }
