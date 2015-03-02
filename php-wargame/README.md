@@ -16,7 +16,7 @@ Given these rules, define the classes you would implement to build a War simulat
 # Notes and Assumptions
 
  * Deck is regular 52 card stack where card values range from 2 to 13, 13 being the ace. The joker card is not used.
- * Database driver is MySQL
+ * Database driver is MySQL.
  * It is assumed that some kind of ORM library or database abstraction will be used at implementation.
  * Only the models are to be outlined, controllers and views are not.
  * Minimum version of PHP 5.4 is used.
@@ -27,13 +27,13 @@ Please refer to the `/php-wargame/docs/war-db-erd.svg` file for an entity-relati
 
 There are 2 main queues involved. The tables used to store data for these queues are `cards_in_stack`, which stores cards that are in the down stack of a player, and `cards_in_round`, which stores the cards currently in battle or war in the round.
 
-When the first player join the game, a `game_session` entry is created as well as a `player_session` entry. The `player_session` links the players to a game in a many-to-many relationship. When the required number of players have joined a game session, the game is initialised and an equal number of card are divided between the players.
+When the first player joins the game, a `game_session` entry is created as well as a `player_session` entry. The `player_session` links the players to a game in a many-to-many relationship. When the required number of players have joined a game session, the game is initialised and an equal number of cards are divided between the players.
 
-The game automatically pops a card from the beginning of the `cards_in_stack` queue for each player in session and creates a `round` instance as needed and adds the cards to the `cards_in round` table. The UI should allow the player to pick a card (or just 'flip' the card if only one is in play). This sets the `is_picked` flag on the `card_in_round` entry.
+The game automatically pops a card from the beginning of the `cards_in_stack` queue for each player in session and creates a `round` instance as needed and adds the cards to the `cards_in round` table. The UI should allow the player to pick a card (or just 'flip' the card if only one is in play). This sets the `is_picked` flag on the `card_in_round` entry to true.
 
 If one card is higher than the other, all cards in play are flushed to the end of the down stack of the winner. Once the `is_flushed` flag is active, the card is no longer in play for the current round.
 
-If a draw situation is determined, the `is_draw` flag is set on the cards in play. Up to 3 more cards are popped from each user's stack and added to the round. The UI will again allow each user to pick a card to flip. If a player runs out of cards while placing three down to break the draw, the UI can allow that player to flip the last card popped from their stack.
+If a draw situation is determined, the `is_draw` flag is set to true on the cards in play. Up to 3 more cards are popped from each user's stack and added to the round. The UI will again allow each user to pick a card to flip. If a player runs out of cards while placing three down to break the draw, the UI can allow that player to flip the last card popped from their stack.
 
 The Game Session object reevaluates the state of each player's stack after each round has ended to determine if there is a final winner.
 
