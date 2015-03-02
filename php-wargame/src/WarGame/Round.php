@@ -3,7 +3,7 @@
 namespace WarGame;
 
 /**
- * Round entity handles caards currently in play and determining
+ * Round entity handles cards currently in play and determines
  * the winner of the round based on card values.
  *
  * @author Yaasir Ketwaroo<yaasir@ketwaroo.com>
@@ -103,13 +103,13 @@ class Round
     }
 
     /**
-     * Get the cards currently being 
+     * Get the cards currently being played in the round
      * @param Player $player
      * @return Card[] array of cards
      */
     public function getCardsInPlay(Player $player)
     {
-        //cards_in_round where is_picked, is_draw, and is_flused are all zero
+        //cards_in_round where is_picked, is_draw, and is_flushed are all zero
     }
 
     /**

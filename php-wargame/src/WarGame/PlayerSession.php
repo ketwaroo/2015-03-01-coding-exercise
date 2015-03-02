@@ -18,19 +18,19 @@ class PlayerSession
     protected $gameSession;
 
     /**
-     *
+     * stack of cards owned by the player session
      * @var CardStack 
      */
     protected $cardStack;
 
     /**
-     *
+     * player instance associated with the current player session
      * @var Player 
      */
     protected $player;
 
     /**
-     * new player session creates from a player and a session
+     * new player session created from a player and a session
      * 
      * @param Player $player
      * @param GameSession $session
@@ -87,13 +87,15 @@ class PlayerSession
     }
 
     /**
-     * This is an action perform by the user when there is a draw
-     * and there is more than one card per player on the board
-     * otherwise this would be called automatically by the game.
+     * pass thru call to the round to pick a certain card
+     * @param Round $round
+     * @param Card $picked
+     * @return PlayerSession 
      */
     public function pickCard(Round $round, Card $picked)
     {
-        
+        $round->pickCard($picked);
+        return $this;
     }
 
     /**
@@ -105,6 +107,10 @@ class PlayerSession
         return $this->player;
     }
 
+    /**
+     * 
+     * @return Round round currently in play
+     */
     public function getCurrentRound()
     {
         return $this->getSession()

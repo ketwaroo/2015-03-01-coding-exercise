@@ -4,7 +4,7 @@ namespace WarGame;
 
 /**
  * The War Game session.
- * This is the entry point for the game and clls the other models to perform different operations.
+ * This is the entry point for the game and calls the other models to perform different operations.
  *
  * @author Yaasir Ketwaroo<yaasir@ketwaroo.com>
  */
@@ -30,7 +30,7 @@ class GameSession
     }
 
     /**
-     * sends and invitation to another player to join the game
+     * sends an invitation to another player to join the game
      * @return GameSession
      */
     public function invitePlayer(Player $player)
@@ -56,7 +56,7 @@ class GameSession
     }
 
     /**
-     * get the player session given a playser instance
+     * get the player session given a player instance
      * @param Player $player
      * @return PlayerSession
      */
@@ -185,7 +185,7 @@ class GameSession
      */
     public function determineGameWinner()
     {
-        // foreach player session, get stack height.
+        // for each player session, get stack height.
         // if all but one player has a stack height == 0; game is won by last standing player
         //  
 

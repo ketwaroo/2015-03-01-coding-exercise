@@ -43,13 +43,13 @@ class Card
     }
 
     /**
-     * 
+     * set and save new value.
      * @param integer $value
      * @return Card
      */
     public function setValue($value)
     {
-        // set and save new value.
+        
     }
 
     /**
@@ -58,7 +58,7 @@ class Card
      */
     public static function shuffleDeck()
     {
-        // 
+         
     }
 
     /**
