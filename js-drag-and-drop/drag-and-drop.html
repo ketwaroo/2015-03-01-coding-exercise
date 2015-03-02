@@ -34,55 +34,69 @@
                  */
                 var placeholderLi = $("<li class='placeholder' />");
 
-                /**
-                 * 
+                /** 
+                 * first, we find all of the list elements within the sortable ul
+                 * element
                  */
                 $('ul.sortable').find('li')
+                        /**
+                         * mousedown event sets the dragable flag to true and also
+                         * detaches the selected li element and replaces it with a
+                         * placeholder
+                         */
                         .mousedown(function (event) {
-                            event.preventDefault();
+                            event.preventDefault(); // prevent selection on drag
                             isDragging = true;
                             // place the placeholder
                             $(this).before(placeholderLi);
                             // detach li element 
                             detachedLi = $(this).detach();
                         })
-                        .mouseenter(function (event) {
-                            event.preventDefault();
+                        /**
+                         * instead of using mousemove event (which is processor
+                         * intensive), we attach a handler to the mouseenter and
+                         * mouseleave event to determine where to move the 
+                         * placeholder as the mouse is dragged. only the 
+                         * placeholder is moved at this point.
+                         */
+                        .on('mouseenter, mouseleave', function (event) {
+                            event.preventDefault(); // prevent selection on drag
                             if (isDragging)
                             {
+                                // edge detection
+                                // figure out if mouse pointer is above or below the midline of
+                                // the target element
+                                var mouseY = event.pageY;
+                                var elementMid = $(this).offset().top + ($(this).height() / 2);
 
+                                // always detach the existing placeholder before moving it
                                 $('ul.sortable').find('li.placeholder').detach();
-                                $(this).before(placeholderLi);
+
+                                if (mouseY < elementMid) // if mouse is below, placeholder is added above
+                                {
+                                    $(this).before(placeholderLi);
+                                }
+                                else
+                                {
+                                    $(this).after(placeholderLi);
+                                }
                             }
-
-                        })
-                        .mouseleave(function (event) {
-                            event.preventDefault();
-                            // literally edge case handling
-
-                            if (isDragging)
-                            {
-
-                                $('ul.sortable').find('li.placeholder').detach();
-                                $(this).after(placeholderLi);
-                            }
-
                         });
 
                 /**
-                 * mouseup event is bound to whole document
+                 * mouseup event is bound to whole document so that no matter
+                 * where the detached element is dropped, it will always be 
+                 * attached to wherever the placeholder is in the ul element
                  */
                 $(document).mouseup(function (event) {
+                    event.preventDefault(); // prevent selection on drag
                     if (isDragging)
                     {
                         isDragging = false;
                         $('ul.sortable').find('li.placeholder').after(detachedLi).detach();
                     }
                 });
-
-
             });
-
         </script>
     </head>
     <body>
