@@ -59,7 +59,7 @@
                          * placeholder as the mouse is dragged. only the 
                          * placeholder is moved at this point.
                          */
-                        .on('mouseenter, mouseleave', function (event) {
+                        .on('mouseenter mouseleave', function (event) {
                             event.preventDefault(); // prevent selection on drag
                             if (isDragging)
                             {
