@@ -3,9 +3,9 @@
 namespace WarGame;
 
 /**
- * The Card definition is simply a `name` and an interger `value`.
- * The `name` would have typical values as `2 of hearts`, `6 of spade`, `king of treble` etc.
- * the value would be used when comparign the strength of each card. the values range from 2 to 13
+ * The Card definition is simply a `name` and an integer `value`.
+ * The `name` would have typical values such as `2 of hearts`, `6 of spades`, `king of treble` etc.
+ * the value would be used when comparing the strength of each card. the values range from 2 to 13
  *
  * @author Yaasir Ketwaroo<yaasir@ketwaroo.com>
  */
