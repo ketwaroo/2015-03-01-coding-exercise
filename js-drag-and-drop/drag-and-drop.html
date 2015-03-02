@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Sortable List Exercise</title>
+        <meta charset="UTF-8"> 
+        <style type="text/css">
+            body{font-family: arial,sans-serif;font-size: 16px;}
+            #wrapper{width:960px;border:1px solid #888;border-radius:1em;margin:1em auto;padding:1em;}
+
+            ul{list-style: none}
+            li{border:1px solid #88a; width:200px; height:30px; line-height: 30px; padding:0 10px;margin:0px;}
+            li.placeholder{border:1px dashed #a88;}
+
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script type="text/javascript">
+
+            jQuery(document).ready(function () {
+
+                /**
+                 * lets everybody know we're dragging something around
+                 * @type Boolean
+                 */
+                var isDragging = false;
+                /**
+                 * storage for the detached list element we're dragging
+                 * @type jQuery 
+                 */
+                var detachedLi;
+                /**
+                 * important placeholder element. used to keep track of where
+                 * the detached li should be reattached.
+                 * @type jQuery
+                 */
+                var placeholderLi = $("<li class='placeholder' />");
+
+                /**
+                 * 
+                 */
+                $('ul.sortable').find('li')
+                        .mousedown(function (event) {
+                            event.preventDefault();
+                            isDragging = true;
+                            // place the placeholder
+                            $(this).before(placeholderLi);
+                            // detach li element 
+                            detachedLi = $(this).detach();
+                        })
+                        .mouseenter(function (event) {
+                            event.preventDefault();
+                            if (isDragging)
+                            {
+
+                                $('ul.sortable').find('li.placeholder').detach();
+                                $(this).before(placeholderLi);
+                            }
+
+                        })
+                        .mouseleave(function (event) {
+                            event.preventDefault();
+                            // literally edge case handling
+
+                            if (isDragging)
+                            {
+
+                                $('ul.sortable').find('li.placeholder').detach();
+                                $(this).after(placeholderLi);
+                            }
+
+                        });
+
+                /**
+                 * mouseup event is bound to whole document
+                 */
+                $(document).mouseup(function (event) {
+                    if (isDragging)
+                    {
+                        isDragging = false;
+                        $('ul.sortable').find('li.placeholder').after(detachedLi).detach();
+                    }
+                });
+
+
+            });
+
+        </script>
+    </head>
+    <body>
+        <div id="wrapper">
+            <main>
+
+                <ul class="sortable">
+
+                    <li>Item 01</li>
+                    <li>Item 02</li>
+                    <li>Item 03</li>
+                    <li>Item 04</li>
+                    <li>Item 05</li>
+                    <li>Item 06</li>
+                    <li>Item 07</li>
+
+                </ul>
+            </main>
+            <footer>   
+                <p class="description">
+                    Given an HTML unordered list of elements (&lt;ul&gt;&lt;li&gt;element 1&lt;/li&gt; ... &lt;/ul&gt;) in a web page, using only native JavaScript and the jQuery library (jQueryUI and any other libraries are not allowed), write a script that will allow a user to use drag and drop operations within the browser to reorder the list.  Please provide a single file to be loaded and tested using the Chrome browser.  This file should include the JavaScript Script, any CSS rules, and the HTML code necessary.  Please use the Google web resource for the most recent version of jQuery.
+                </p>
+            </footer>
+        </div>
+    </body>
+</html>
+
+
